@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Arbeitszeiterfassung</title>
+    <link rel="icon" type="image/svg+xml"
+          href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%233b82f6'/%3E%3Ccircle cx='32' cy='32' r='22' fill='white'/%3E%3Ccircle cx='32' cy='32' r='2.5' fill='%23111827'/%3E%3Cpath d='M32 18v15l10 6' fill='none' stroke='%23111827' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"/>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="container">
+    <header class="card">
+        <h1>Arbeitszeiterfassung</h1>
+        <p>Erfasse Arbeitszeiten, Pausen und Aufgaben komfortabel in einer modernen Oberfläche.</p>
+    </header>
+
+    <section class="card">
+        <h2>Tageserfassung</h2>
+
+        <form id="timeForm">
+            <div class="grid">
+                <div class="field">
+                    <label for="date">Datum</label>
+                    <input type="date" id="date" required/>
+                </div>
+
+                <div class="field">
+                    <label for="startTime">Startuhrzeit</label>
+                    <input type="time" id="startTime" required/>
+                </div>
+
+                <div class="field">
+                    <label for="endTime">Enduhrzeit</label>
+                    <input type="time" id="endTime" required/>
+                </div>
+            </div>
+
+            <div class="breaks-section">
+                <div class="breaks-header">
+                    <div>
+                        <h3>Pausen</h3>
+                        <p class="section-hint">Mehrere Pausen können getrennt erfasst werden.</p>
+                    </div>
+                    <button type="button" id="addBreakBtn" class="secondary">Pause hinzufügen</button>
+                </div>
+
+                <div id="breaksContainer"></div>
+            </div>
+
+            <div class="tasks-header">
+                <div class="tasks-header-main">
+                    <h3>Tasks</h3>
+                    <div id="presetTasks" class="preset-tasks"></div>
+                </div>
+                <button type="button" id="addTaskBtn" class="secondary">Task Hinzufügen</button>
+            </div>
+
+            <div id="tasksContainer"></div>
+
+            <div class="summary">
+                <div><strong>Gesamtzeit:</strong> <span id="grossTime">0:00</span></div>
+                <div>
+                    <strong>Pausenzeit:</strong>
+                    <span id="breakTime">0:00</span>
+                    <span id="breakTimeNote" class="summary-note"></span>
+                </div>
+                <div><strong>Task-Summe:</strong> <span id="taskTime">0:00</span></div>
+                <div><strong>Offen:</strong> <span id="openTime">0:00</span></div>
+            </div>
+            <div id="summaryWarning" class="summary-warning" aria-live="polite"></div>
+
+            <div class="actions">
+                <button type="submit">Eintrag speichern</button>
+                <button type="button" id="resetBtn" class="secondary">Zurücksetzen</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="card">
+        <h2>Datenverwaltung</h2>
+        <div class="actions">
+            <button id="exportBtn">JSON exportieren</button>
+            <label class="file-label">
+                JSON importieren
+                <input type="file" id="importFile" accept=".json,application/json"/>
+            </label>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>Übersicht</h2>
+        <div id="entriesList" class="entries-list"></div>
+    </section>
+</div>
+
+<template id="breakTemplate">
+    <div class="break-row">
+        <input type="time" class="break-start-time" placeholder="Pause von"/>
+        <input type="time" class="break-end-time" placeholder="Pause bis"/>
+        <button type="button" class="danger remove-break">Entfernen</button>
+    </div>
+</template>
+
+<template id="taskTemplate">
+    <div class="task-row">
+        <input type="text" class="task-name" placeholder="Taskname" required/>
+        <input type="text" class="task-duration" placeholder="Dauer (hh:mm)" pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" required/>
+        <button type="button" class="danger remove-task">Entfernen</button>
+    </div>
+</template>
+
+<script src="app.js"></script>
+</body>
+</html>
